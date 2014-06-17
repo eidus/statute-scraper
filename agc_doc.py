@@ -24,9 +24,7 @@ url=raw_input("URL:")
 #url='http://www.google.com'
 headers = {'User-Agent':'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6'}
 req = urllib2.Request(url, headers=headers) 
-f= open('outpu.csv', 'wb') 
-writer = csv.writer(f,delimiter='|',quoting=csv.QUOTE_ALL    )
-writer.writerow(['act_number','section_number','section_name','section_content'] ) 
+
 #req = urllib2.Request(url)
 rsp = urllib2.urlopen(req).read()
 bi = io.BytesIO(rsp)
@@ -38,6 +36,9 @@ def get_number(str):
     return re.findall('(\d+)',str)[0]
 act_number=" ".join(tree.xpath('//div[@id="contents"]//text()'))
 act_number=get_number(act_number)
+f= open(act_number+'.csv', 'wb') 
+writer = csv.writer(f,delimiter='|',quoting=csv.QUOTE_ALL    )
+writer.writerow(['act_number','section_number','section_name','section_content'] ) 
 for i in tree.xpath('//blockquote[@class="TocParagraph"]//a') :
      url=i.xpath('./@href')[0]
      name=i.xpath('./text()')[0]
